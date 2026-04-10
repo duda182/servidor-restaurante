@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garçom - Confirmar Reservas</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column; 
+            color: #333;
+        }
+
+     
+        .header {
+            background: white;
+            padding: 2rem; 
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            border-bottom: 3px solid #667eea; 
+        }
+
+        .header h1 {
+            font-size: 2.5rem; 
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 700; 
+        }
+
+        .header p {
+            font-size: 1.2rem; 
+            color: #666; 
+        }
+
+        .container {
+            flex: 1; 
+            display: flex;
+            justify-content: center; 
+            align-items: flex-start; 
+            padding: 2rem;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px; 
+            padding: 2rem;
+            max-width: 1200px; 
+            width: 100%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef; 
+        }
+
+        
+        .back-button {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: #667eea;
+            transform: translateX(-5px);
+            color: white;
+        }
+
+        
+        .section-title {
+            font-size: 2rem; 
+            margin-bottom: 1rem;
+            color: #333;
+            font-weight: 600; 
+        }
+
+        .description {
+            font-size: 1.1rem; 
+            margin-bottom: 2rem;
+            color: #666;
+            line-height: 1.6; 
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 2px solid #f1f3f4; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; 
+            background-color: transparent;
+        }
+
+        th, td {
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #e9ecef; 
+            color: #333;
+        }
+
+        th {
+            background: #f8f9fa; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px; 
+            color: #495057;
+            font-size: 0.9rem; 
+        }
+
+
+        tr:hover {
+            background: #f8f9fa !important; 
+            cursor: pointer; 
+            transform: scale(1.005); 
+            transition: all 0.3s ease;
+        }
+
+
+        tr.selected {
+            background: #e3f2fd !important; 
+            border-left: 4px solid #667eea; 
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2); 
+        }
+
+        .form-section {
+            background: #f8f9fa; 
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid #e9ecef;
+        }
+
+            .form-group {
+            margin-bottom: 1.5rem;
+        }
+    
+        label {
+            display: block; 
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            max-width: 400px; 
+            padding: 1rem; 
+            border: 2px solid #e9ecef; 
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease; 
+        }
+
+        input::placeholder {
+            color: #adb5bd; 
+        }
+
+
+        input:focus {
+            outline: none; 
+            border-color: #667eea; 
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); 
+        }
+
+        
+        .confirm-button {
+            background: #667eea;
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        .confirm-button:hover:not(:disabled) {
+            background: #5a6fd8; 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); 
+        }
+
+        .confirm-button:disabled {
+            background: #dee2e6; 
+            cursor: not-allowed; 
+            color: #6c757d; 
+        }
+
+        .confirm-button::before {
+            content: ''; 
+            position: absolute;
+            top: 0;
+            left: -100%; 
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s; 
+        }
+
+        .confirm-button:hover:not(:disabled)::before {
+            left: 100%; 
+        }
+
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda; 
+            border: 1px solid #c3e6cb; 
+            color: #155724; 
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da; 
+            border: 1px solid #f5c6cb; 
+            color: #721c24;
+            display: block;
+        }
+
+        .loading {
+            color: #6c757d;
+            display: block;
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #495057;
+        }
+
+    
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem; 
+            }
+            
+            .main-content {
+                padding: 1.5rem; 
+            }
+            
+            .header h1 {
+                font-size: 2rem; 
+            }
+            
+            .section-title {
+                font-size: 1.5rem; 
+            }
+            
+            table {
+                font-size: 0.9rem;
+            }
+            
+            th, td {
+                padding: 10px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🍽️ Sistema de Restaurante</h1>
+        <p>Área do Garçom - Confirmar Reservas</p>
+    </div>
+
+
+    <div class="container">
+        <div class="main-content">
+            <a href="/" class="back-button">← Voltar ao Menu Principal</a>
+            
+            <h2 class="section-title">Confirmar Reserva</h2>
+            <p class="description">Selecione uma reserva disponível na tabela abaixo e informe seu nome para confirmar.</p>
+
+            <div class="table-container">
+                <table id="tabela-reservas">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Mesa</th>
+                            <th>Pessoas</th>
+                            <th>Responsável</th>
+                        </tr>
+            
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="nome-garcom">Nome do Garçom:</label>
+                    <input type="text" id="nome-garcom" placeholder="Digite seu nome completo" />
+                </div>
+
+                <button id="btn-confirmar" class="confirm-button" disabled>
+                    Confirmar Reserva Selecionada
+                </button>
+
+                <div id="mensagem" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const tabelaBody = document.querySelector('#tabela-reservas tbody'); 
+        const btnConfirmar = document.getElementById('btn-confirmar'); 
+        const inputGarcom = document.getElementById('nome-garcom'); 
+        const mensagemDiv = document.getElementById('mensagem'); 
+     
+        let reservaSelecionadaId = null;
+ 
+
+        function formatarData(dataString) {
+            if (!dataString) return dataString;
+            
+            if (dataString.includes('/')) return dataString;
+            
+            if (dataString.includes('-') && dataString.length === 10) {
+                const partes = dataString.split('-');
+                if (partes.length === 3) {
+                    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+                }
+            }
+            
+            return dataString;
+        }
+
+
+        async function carregarReservas() {
+            mensagemDiv.className = 'message loading';
+            mensagemDiv.textContent = 'Carregando reservas...';
+            
+            try {
+                const res = await fetch('/reservas-disponiveis');
+                
+                if (!res.ok) throw new Error('Erro ao carregar reservas');
+                
+                const reservas = await res.json();
+                
+                if (reservas.length === 0) {
+                    tabelaBody.innerHTML = '<tr><td colspan="6" class="empty-state"><h3>🍽️</h3><p>Nenhuma reserva disponível no momento.</p></td></tr>';
+                    btnConfirmar.disabled = true;
+                    mensagemDiv.style.display = 'none';
+                    return;
+                }
+                
+                tabelaBody.innerHTML = '';
+                
+                reservas.forEach(r => {
+                    const tr = document.createElement('tr'); 
+                    tr.innerHTML = `
+                        <td>${r.id}</td>
+                        <td>${formatarData(r.data)}</td>
+                        <td>${r.hora}</td>
+                        <td>${r.mesa}</td>
+                        <td>${r.pessoas}</td>
+                        <td>${r.responsavel}</td>
+                    `;
+                    
+                    tr.addEventListener('click', () => {
+                        console.log('Linha clicada, ID:', r.id); 
+                        selecionarReserva(tr, r.id);
+                    });
+                    
+
+                    tabelaBody.appendChild(tr);
+                });
+                
+                console.log('Reservas carregadas:', reservas);
+                
+                btnConfirmar.disabled = true;
+                mensagemDiv.style.display = 'none';
+                
+            } catch (error) {
+                mensagemDiv.textContent = 'Erro ao carregar reservas. Tente novamente.';
+                mensagemDiv.className = 'message error';
+                console.error('Erro ao carregar reservas:', error);
+            }
+        }
+
+        
+        function selecionarReserva(tr, id) {
+            [...tabelaBody.querySelectorAll('tr')].forEach(linha => 
+                linha.classList.remove('selected')
+            );
+            
+            tr.classList.add('selected');
+
+            reservaSelecionadaId = id;
+            console.log('Reserva selecionada, ID:', reservaSelecionadaId);
+            
+            atualizarBotaoConfirmar();
+            
+            mensagemDiv.style.display = 'none';
+        }
+
+        function atualizarBotaoConfirmar() {
+            const nomePreenchido = inputGarcom.value.trim().length > 0;
+            const reservaSelecionada = reservaSelecionadaId !== null;
+            
+            const shouldEnable = reservaSelecionada && nomePreenchido;
+            btnConfirmar.disabled = !shouldEnable;
+            
+            console.log('Atualizar botão - reserva:', reservaSelecionadaId, 'nome:', inputGarcom.value, 'disabled:', btnConfirmar.disabled);
+        }
+
+
+        inputGarcom.addEventListener('input', atualizarBotaoConfirmar);
+
+        btnConfirmar.addEventListener('click', async () => {
+            if (!reservaSelecionadaId) {
+                mensagemDiv.textContent = 'Por favor, selecione uma reserva na tabela.';
+                mensagemDiv.className = 'message error';
+                return;
+            }
+            
+            const garcomNome = inputGarcom.value.trim();
+            if (!garcomNome) {
+                mensagemDiv.textContent = 'Por favor, informe o nome do garçom.';
+                mensagemDiv.className = 'message error';
+                return;
+            }
+
+            btnConfirmar.disabled = true;
+            
+            mensagemDiv.textContent = 'Confirmando reserva...';
+            mensagemDiv.className = 'message loading';
+
+            try {
+                const res = await fetch(`/confirmar/${reservaSelecionadaId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ garcom: garcomNome })
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    mensagemDiv.textContent = data.mensagem || 'Reserva confirmada com sucesso!';
+                    mensagemDiv.className = 'message success';
+                    
+                    reservaSelecionadaId = null;
+                    inputGarcom.value = '';
+                    btnConfirmar.disabled = true;
+                    
+                    carregarReservas();
+                } else {
+                    mensagemDiv.textContent = data.mensagem || data.error || 'Erro ao confirmar reserva.';
+                    mensagemDiv.className = 'message error';
+                    btnConfirmar.disabled = false; 
+                }
+            } catch (error) {
+                mensagemDiv.textContent = 'Erro na conexão. Tente novamente.';
+                mensagemDiv.className = 'message error';
+                btnConfirmar.disabled = false; 
+            }
+        });
+
+
+        carregarReservas();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('tabela-reservas');
+
+            table.addEventListener('mouseover', function(e) {
+                if (e.target.tagName === 'TD') {
+                    e.target.parentElement.style.transform = 'scale(1.005)';
+                }
+            });
+            
+            table.addEventListener('mouseout', function(e) {
+                if (e.target.tagName === 'TD') {
+                    e.target.parentElement.style.transform = 'scale(1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
